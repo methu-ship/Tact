@@ -1,0 +1,117 @@
+
+# Implementing a Simple Vault Contract
+In this guide, we'll walk you through an implementation of a simple vault contract using Tact. This contract allows users to deposit funds while only the contract owner can withdraw them. We'll be using VS Code for development and also covering the deployment process.
+
+## The Vault smart contract will:
+
+- Allow users to deposit funds into the contract.
+
+- Allow only the contract owner to withdraw funds.
+
+- Reject withdrawals if the requester is not the owner.
+
+- Prevent withdrawing more than the available balance.
+
+:::tip
+We've already covered setting up the development environment in the previous section. If you haven't done so, please refer to that guide before proceeding.
+:::
+
+## Writing the Contract
+Open VS Code, navigate to your project folder and open the contract.tact file. And now we can start our implementation.
+
+### Step 1: Setting Up the Contract
+First, let’s import the necessary standard library modules:
+```ts
+import "@stdlib/deploy";
+import "@stdlib/ownable";
+```
+`@stdlib/deploy` Required for deploying the contract.
+
+`@stdlib/ownable` Ensures that only the contract owner can perform specific actions (i.e., withdrawals).
+
+### Step 2 – Defining the Message Structure
+Next, we define a Withdraw message, which will be used to request fund withdrawals:
+```ts
+message Withdraw {
+    amount: Int as coins;
+}
+```
+The message includes:
+
+`amount`: This is the number of coins the owner wants to withdraw.
+
+### Step 3 – Setting Up the Contract Structure
+Now, let’s define the main contract and initialize the required state variables:
+```ts
+contract TonTesting with Deployable, Ownable {
+     balance: Int as coins = 0;  
+     owner: Address; 
+
+    init() {
+        self.owner = sender();  
+    }
+```
+`balance`: The balance state variable racks the total funds held in the contract.
+
+`owner`: This stores the contract owner's address.
+
+`init()`: This is a constuctor that runs only once when the contract is deployed, setting the contract creator as the owner.
+
+### Step 4 – Implementing Deposit Functionality
+The contract should allow users to send funds to it. Let's handle this with a simple deposit function.
+```ts
+    receive("deposit fund") {
+        self.balance += context().value; 
+    }
+```
+Whenever a user sends funds, the contract balance increases accordingly.
+
+### Step 5 – Implementing Withdraw Functionality
+Now, Let's implement the withdrawal logic to ensure only the owner can withdraw funds:
+```ts
+receive(msg: Withdraw) {
+        self.requireOwner();
+        require(self.balance >= msg.amount, "Insufficient balance!");
+
+        self.balance -= msg.amount;  // Deduct withdrawn amount
+        send(SendParameters{
+            to: sender(),
+            value: msg.amount,
+            mode: SendIgnoreErrors, 
+            body: "Get token".asComment(),
+        });
+    }
+```
+`self.requireOwner()`: Ensures only the owner can call this function.
+
+`require(self.balance >= msg.amount)`: Ensures there are sufficient funds before processing the withdrawal.
+
+`self.balance -= msg.amount`: Deducts the requested amount from the balance.
+
+`send(SendParameters{ ... })`: Transfers the requested amount to the sender.
+
+### Step 6 – Implementing a Getter Function
+Let's write a getter function that allows users to check the contract balance without modifying the state:
+```ts
+    get fun balance(): Int {
+    return self.balance;
+}
+```
+
+### Step 7: Building the Smart Contract
+Run the following command inside the project folder:
+```sh
+npx blueprint build
+```
+This will compile the TonTesting.tact contract and generate TVM-compatible bytecode.
+
+### Step 8: Deploying the Smart Contract
+To deploy the contract, run the deployment command:
+```sh
+npx blueprint run
+```
+This will prompt you to select either **Mainnet** or **Testnet**. Select **Testnet**, choose the wallet you're using, and sign the transaction.
+Once deployed, the contract address will be displayed. You can check the contract deployed for this guide [here](https://testnet.tonscan.org/address/kQDwe-r_TvwMl7IrzWN458LI-82EN83Z6Hh7x53G8gRYSUh_).
+
+### Final Thoughts
+Great job! 🎉 You’ve built and deployed a secure vault contract using Tact. To take it further, try writing tests to validate deposit and withdrawal functionality. You can also explore adding a time-lock mechanism for withdrawals, or automatic payouts based on predefined conditions. Happy Building🎉 

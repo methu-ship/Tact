@@ -1,0 +1,42 @@
+# Environment Setup
+
+Before we get started with writing smart contracts, we first need to set up our development environment. Think of this as preparing your workspace before building something great—it’ll make everything smoother as we go along.
+
+:::tip
+For this guide, we'll be using the blueprint development environment.
+:::
+
+## Quick Start
+To begin, you'll need a code editor (recommend VS Code) and Node.js installed on your system. If you haven’t installed Node.js yet, you can get it from [here](https://nodejs.org/).
+
+Open VS Code, launch the terminal, and run the following command:
+```sh
+npm create ton@latest
+
+```
+This command initializes a new project. You’ll be prompted to enter a name—choose something meaningful, like Ton-testing.
+
+Next, you’ll see an option to select a contract template. Choose Empty Tact Contract to start with a clean setup.
+
+### Project Structure
+After the setup is complete, your project folder should look like this:
+```plaintext
+Ton-testing/
+├── build/
+|   ├── node_modules/
+│   ├── contracts/
+│   │   ├── counter.tact
+│   ├── Scripts/
+│   ├── test/
+│   ├── index.ts
+├── public/
+│   ├── logo.png
+├── .gitignore
+├── package.json
+├── README.md
+├── tsconfig.json
+```
+
+### Next Steps
+With your environment set up, you’re now ready to start building smart contracts on TON. 
+In the next section, we’ll learn about the basics of Tact Language. Excited? Let’s get to it! 🚀

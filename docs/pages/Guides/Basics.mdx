@@ -1,0 +1,61 @@
+# Data Types and Operators in Tact
+
+Tact is a **strongly typed** language designed for writing smart contracts on **TON**. Understanding its **data types** and **operators** is key to efficient contract development.  
+
+---
+## Data Types in Tact
+
+Tact supports **primitive** and **complex** data types:
+
+### 🔹 Primitive Types
+- `Int`, `Uint` → Signed & unsigned integers (For signed int,`let x: Int as int32= -5;` For unsigned int, `let x: Int as Uint32= 10;`)  
+- `Bool` → Boolean values (`let isActive: Bool = true;`)  
+- `Address` → TON address (`myAddress: Address = address("EQC2...yourTONAddress...");`)
+- `Cell`, `Slice` → Used for storing and processing data  
+
+:::tip
+Be mindful of the data types and storage sizes you use, as larger sizes can lead to higher gas costs.
+:::
+
+### 🔹 Complex Types
+- `Tuple` → Fixed-size collection (`let myTuple: (Int, Bool) = (10, true);`)  
+- `Map<K, V>` → Key-value storage (`let users: Map<Address, Int> = new Map();`)  
+- `Array<T>` → Dynamic list (`let numbers: Array<Int> = [1, 2, 3];`)  
+- `Struct` → Custom structures  
+
+---
+
+## Operators in Tact
+
+### 🔹 Arithmetic Operators
+`+`, `-`, `*`, `/`, `%` (e.g., `let sum = 5 + 3;`)  
+
+### 🔹 Comparison Operators
+`==`, `!=`, `>`, `<`, `>=`, `<=` (e.g., `let isEqual = (5 == 5);`)  
+
+### 🔹 Logical Operators
+`&&` (AND), `||` (OR), `!` (NOT)  
+
+### 🔹 Assignment Operators
+`=`, `+=`, `-=`, `*=`, `/=`  
+
+## Functions in Tact
+
+1️⃣ Get Functions (Read-only) – Used for retrieving data without modifying state.
+
+```ts
+get fun getCounter(): Int {
+    return self.counter;
+}
+```
+
+2️⃣ Receive Functions (State-modifying) – Handle messages and update contract state.
+
+```ts
+receive(msg: Increment) {
+    self.counter += msg.amount;
+}
+```
+We’ve gone through the basics of Tact, but there’s always more to learn. If you want to get comfortable with the language, be sure to check out the [Tact documentation](https://docs.tact-lang.org/book/) or check [Tact-by-example](https://tact-by-example.org/00-hello-world).
+
+Next up, we’ll walk you through how to build a vault smart contract. Let’s keep going!
