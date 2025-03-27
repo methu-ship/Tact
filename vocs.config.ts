@@ -29,12 +29,12 @@ export default defineConfig({
           link: '/Guides/Vault',
         },
         {
-          text: 'Implementing a Fungible Token',
+          text: 'Implement a Fungible Token',
           link: '/Guides/Token',
         },
 
         {
-          text: 'Implementing Non-Fungible Tokens (NFTs)',
+          text: 'Implement Non-Fungible Tokens (NFTs)',
           link: '/Guides/NFT',
         },
         
